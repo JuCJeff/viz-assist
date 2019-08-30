@@ -30,6 +30,8 @@ public class MainActivityUIController {
     }
 
     public void resume() {
+        resultView = activity.findViewById(R.id.resultView);
+        imageView = activity.findViewById(R.id.capturedImage);
     }
 
     public void updateResultView(final String text) {
@@ -45,5 +47,13 @@ public class MainActivityUIController {
     }
 
     public void askForPermission(String permission, Integer requestCode) {
+        // Should we show explanation
+        if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
+            // Second time
+            ActivityCompat.requestPermissions(activity, new String[]{permission}, requestCode);
+        } else {
+            // First time
+            ActivityCompat.requestPermissions(activity, new String[]{permission}, requestCode);
+        }
     }
 }

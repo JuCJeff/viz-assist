@@ -39,15 +39,31 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mainActivityUIController = new MainActivityUIController(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        mainActivityUIController.resume();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_capture:
+                mainActivityUIController.updateResultView(getString(R.string.result_placeholder));
+                if (ContextCompat.checkSelfPermission(MainActivity.this,
+                        Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    mainActivityUIController.askForPermission(
+                            Manifest.permission.CAMERA, CAMERA_PERMISSION_REQUEST);
+                } else {
+                    ImageActions.startCameraActivity(this, IMAGE_CAPTURE_CODE);
+                }
+                break;
+            default:
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -59,8 +75,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                           int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
