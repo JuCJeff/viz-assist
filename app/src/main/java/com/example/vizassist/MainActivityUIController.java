@@ -3,10 +3,12 @@ package com.example.vizassist;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.MediaStore;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,15 +37,39 @@ public class MainActivityUIController {
     }
 
     public void updateResultView(final String text) {
+        mainThreadHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                resultView.setText(text);
+            }
+        });
     }
 
     public void updateImageViewWithBitmap(Bitmap bitmap) {
+        imageView.setImageBitmap(bitmap);
     }
 
     public void showErrorDialogWithMessage(int messageStringID) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(R.string.error_dialog_title);
+        builder.setMessage(messageStringID);
+        builder.setPositiveButton(R.string.error_dialog_dismiss_button,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
     }
 
     public void showInternetError() {
+        mainThreadHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(activity, R.string.internet_error_message,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     public void askForPermission(String permission, Integer requestCode) {

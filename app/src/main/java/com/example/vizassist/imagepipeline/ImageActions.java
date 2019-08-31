@@ -25,7 +25,7 @@ public class ImageActions {
      * @param requestCode request code to get result when the gallery activity is dismissed.
      */
     public static void startGalleryActivity(Activity activity, int requestCode) {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
         activity.startActivityForResult(intent, requestCode);
     }
 }
